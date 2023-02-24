@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Planets</title>
+    <script>
+        const ipAddress = '35.222.148.204:8080';
+
+        function displayPlanets() {
+            fetch(`http://${ipAddress}`)
+                .then(response => {
+                    if (response.ok) {
+                        console.log(response.json())
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(data => {
+                    const planets = data.planets;
+                    let planetHTML = '';
+
+                    for (let i = 0; i < planets.length; i++) {
+                        const planet = planets[i];
+                        planetHTML += `<div class="planet">
+                            <h2>${planet.name}</h2>
+                            <img src="${planet.image}" alt="${planet.name}">
+                            <p>${planet.description}</p>
+                            <ul>
+                                <li><strong>Position:</strong> ${planet.position}</li>
+                                <li><strong>Velocity:</strong> ${planet.velocity} km/s</li>
+                                <li><strong>Distance:</strong> ${planet.distance} million km</li>
+                            </ul>
+                        </div>`;
+                    }
+
+                    const containerGrid = document.querySelector('.container-grid');
+                    containerGrid.innerHTML = planetHTML;
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+    </script>
+
+    <script>
+        const discoverBtn = document.getElementById('discover-btn');
+        discoverBtn.onclick = function() {
+          window.location.href = 'planets.html';
+        };
+      </script>
+      
+</head>
+<body>
+    <div class="container-grid">
+        <h1>Planet Plug</h1> 
+        <div class="button">
+            <a href="#" class='btn' id="btn-discover" onclick="window.location.href='planets.html'">Discover</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
